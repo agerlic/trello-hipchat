@@ -1,0 +1,8 @@
+trello:
+  board_id: ""
+  api_key: ""
+  token: ""
+hipchat:
+  api_key: ""
+  room: ""
+  color: "purple"
