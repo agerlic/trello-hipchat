@@ -39,6 +39,7 @@ def trello_activity
       next
     end
 
+    next if act["type"] == "createList"
     card_id_short = act["data"]["card"]["idShort"]
     card_id = act["data"]["card"]["id"]
     card_url = "https://trello.com/card/#{card_id}/#{@config["trello"]["board_id"]}/#{card_id_short}"
