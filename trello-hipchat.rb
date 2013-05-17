@@ -39,14 +39,17 @@ def trello_activity
       next
     end
 
-    next if act["type"] == "createList"
-    next if act["type"] == "addMemberToBoard"
-    card_id_short = act["data"]["card"]["idShort"]
-    card_id = act["data"]["card"]["id"]
-    card_url = "https://trello.com/card/#{card_id}/#{@config["trello"]["board_id"]}/#{card_id_short}"
-    card_name = act["data"]["card"]["name"].slice(0, 200)    
-    author = act["memberCreator"]["fullName"]
-    list_name = JSON.parse(@http.get_content trello_full_path("/cards/#{card_id}/list"))["name"]
+    begin
+      card_id_short = act["data"]["card"]["idShort"]
+      card_id = act["data"]["card"]["id"]
+      card_url = "https://trello.com/card/#{card_id}/#{@config["trello"]["board_id"]}/#{card_id_short}"
+      card_name = act["data"]["card"]["name"].slice(0, 200)    
+      author = act["memberCreator"]["fullName"]
+      list_name = JSON.parse(@http.get_content trello_full_path("/cards/#{card_id}/list"))["name"]
+    rescue StandardError => e
+      $stderr.puts e
+      next
+    end
 
     case act["type"]
     when "createCard"
