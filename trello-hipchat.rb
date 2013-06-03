@@ -13,11 +13,11 @@ CONFIG_FILENAME="trello-hipchat.yml"
 @last_id = 0
 
 
-def send_to_hipchat(msg)
+def send_to_hipchat(msg, format="html")
   data = {
     from: :Trello,
     message: msg,
-    message_format: :html,
+    message_format: format,
     color: @config["hipchat"]["color"],
     room_id: @config["hipchat"]["room"]
   }
@@ -65,7 +65,8 @@ def trello_activity
       aurl = act["data"]["attachment"]["url"]
                     
       send_to_hipchat "#{author} added an attachment to card <a href=\"#{card_url}\">#{card_name}</a>: <a href=\"#{aurl}\">#{aname}</a>"
-
+      send_to_hipchat(aurl, "text") if aurl.end_with?("png", "jpg", "jpeg", "gif")
+      
     when "updateCard"
       if act["data"]["old"].key?("idList") and act["data"]["card"].key?("idList")
         # Move between lists
