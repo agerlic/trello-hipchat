@@ -30,7 +30,7 @@ end
 
 def trello_activity
   check_activity = (@last_id == 0)
-  activities = JSON.parse(@http.get_content trello_full_path("/boards/#{@config["trello"]["board_id"]}/actions"))
+  activities = JSON.parse(@http.get_content trello_full_path("/boards/#{@config["trello"]["board_id"]}/actions")+"&limit=1000")
   activities.reverse.each do |act|
     if act["id"] == @last_id
       check_activity = true
